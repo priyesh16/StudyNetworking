@@ -42,20 +42,6 @@
 	* Since application is only concerned about inner IP address,
 		* the outer address can change 
 		* allows user to change from Wifi to Ethernet without interruption
-
-## Deployments:
-
-* Site-to-site VPNs—Tunnels
-	  * maintained by hardware devices
-	  * connect multiple users at remote branches to (one or more) central sites.
-  * Teleworker VPNs—Tunnels:
-	  * maintained by hardware devices
-	  * connect (typically) a single user at residence to a central site.
-  * Remote-access clients—Tunnels:
-	  * established by software
-	  * connect mobile users at airports, hotels to a central site 
-			using WLAN hotspots, LAN ports, or modems.
-
 ## VPN
 	
 * Most common deployment for IPsec
@@ -78,7 +64,54 @@
 		* DH key exchange to create a confidential communication channel to compute shared key
 		* After DH key exchange peers need to authenticated
 	* Peer Authentication
-		* 
+		* uses asymmetric crypto for identity authentication
+		* RSA, DSA are commonly used
+		* uses private and public key to authenticate peer
+			* private key is used to digitally sign the signature
+			* public key is used to decrypt the signature and verify the peer
+			* keys are aka public/private key pairs
+		* PSK
+			* pre shared keys
+			* less secure
+				* prone to dictionary attack
+			* each peer must know the key out of band
+	* Deployment Risks
+		* flaws in an encryption algorithm
+		* flaws in software implementing the algorithm
+		* encryption key disclosure
+			* an attacker who discovers a symmetric key could decrypt previously recorded or current traffic
+			* many VPN implementations actually tend to decrease availability 
+				* as they add more components, complexity, and services to the existing network infrastructure.
+## VPN Deployments
+	
+* Gateway-to-Gateway
+	* aka Site-to-site VPNs
+	* ![](GatewaytoGatewayVPNArchitecture.png)
+	* maintained by hardware devices
+	* connect multiple users at remote branches to (one or more) central sites.
+	* Routing on each network 
+		* configured so that hosts on one network communicate with hosts on the other network
+		* network traffic is automatically routed through the IPsec connection
+		* In tunnel mode
+			* the IP address family of the outer ESP packets transmitted between the gateways does not need to be the same as the IP address family of the encrypted IP packets
+			* eg) hosts can be IPv6 address but gateway can be IPv4
+			* 6in4 or 4in6 to denote the inner and outer IP families
+	* only protects data between the two gateways
+		* often used when connecting two secured networks
+		* eg) branch office to headquarters over the internet
+	* transparent to users
+		* no VPN client software is installed
+	* If connecting two different organizations
+		* special DNS configuration might be required
+* Remote Access
+	* established by software
+	* connect mobile users at airports, hotels to a central site 
+		* using WLAN hotspots, LAN ports, or modems.	
+  * Teleworker VPNs—Tunnels:
+	  * maintained by hardware devices
+	  * connect (typically) a single user at residence to a central site.
+
+			
 
   
 
